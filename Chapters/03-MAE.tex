@@ -1,8 +1,212 @@
 \chapter[Memoria Asociativa Entrópica]{MAE}
 \label{cp:mae}
 
-\section{Entropía}
+La Memoria Asociativa Entrópica es un modelo de memoria computacional que es declarativa y distribuida que en contraste a los modelos de memoria conexionistas, utiliza una tabla de funciones para representar trazas de memoria y almacenar información de manera indeterminada. 
+
+\section{Representación}
+
+En la \acrshort{mae} los objetos son representados como funciones y son almacenados en una tabla en $R^2$ que llamaremos Associative Memory Register (\acrshort{amr}). 
+
+Las columnas de la tabla representan las características de los \textit{embeddings} y las filas el dominio de la \acrshort{mae}, por lo tanto el tamaño de la tabla es de $N \times M$ donde $N$ la dimensión latente de los \textit{embeddings} y $M$ el dominio de la memoria.
+
+Cada objeto se almacena marcando una celda de cada columna en la \acrshort{amr} y puede considerarse como un trazo de memoria. Estas funciones que se almacenan y ademas son las entradas y salidas de las operaciones de la \acrshort{mae}, constituyen representaciones amodales del los objetos concretos y de una modalidad específica (como las imágenes del artículo \cite{pineda_imagery_2023} o el texto propuesto en esta tesis) a partir de los \textit{embeddings} mapeados a través de autoencoders o transformers.
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=4.0in]{Figures//Work//Representaciones.svg}
+  \caption{Niveles de Representación en el Sistema de Memoria Asociativa Entrópica}
+  \label{fig:LíneaDelTiempo}
+\end{figure}
+
+El sistema de memoria, incluye entonces distintos niveles de representaciones. El primer nivel en el que existen los objetos concretos de una modalidad, el segundo un \textit{embedding} en un espacio vectorial específico, el tercero en el que el objeto se representa abstracta y amodalmente en funciones discretas y por último la representación distribuida en la \acrshort{amr}.
 
 \section{Operaciones de la Memoria Asociativa Entrópica}
 
-\subsection{Entropía}
+Las operaciones dentro de la \acrshort{mae} se definen en función de una pista (\textit{\gls{cue}}) y utilizan una tabla de registro auxiliar del mismo tamaño que la \acrshort{amr} para efectuarse. A continuación revisaremos como se utiliza en cada una de las operaciones. 
+
+\subsection{Registro}
+
+La operación de registro denotada \gls{lambda}-register se define como la disyunción lógica \cite{pineda_entropic_2021} o la suma \cite{pineda_weighted_2022} celda a celda entre la pista en la tabla de registro auxiliar y la \acrshort{amr} (Ver \ref{fig:register}). 
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=3.0in]{Figures//Work//Placeholder.svg}
+  \caption{Ejemplo de una operación de registro}
+  \label{fig:register}
+\end{figure}
+
+\subsection{Reconocimiento}
+
+La operación de reconocimiento denotada \gls{eta}-recognition se define a través de la implicación lógica material celda a celda. Una \textit{\gls{cue}} en la tabla auxiliar es reconocida si la implicación lógica es verdadera respecto a la \acrshort{amr}. En otras palabras, si la implicación es verdadera, entonces la pista esta incluida en la memoria \acrshort{amr}. 
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=3.0in]{Figures//Work//Placeholder.svg}
+  \caption{Ejemplo de una operación de reconocimiento}
+  \label{fig:recognition}
+\end{figure}
+
+
+\subsection{Recuperación}
+
+La operación de recuperación denotada \gls{beta}-recall selecciona una fila de la \acrshort{amr} que corresponde al valor del objeto recuperado, para todas las celdas utilizadas por la pista. 
+
+Para esta operación cada columna de la tabla auxiliar se considera una distribución normal centrada en la celda entrante con una desviación estándar $\sigma$ definida como parámetro de la operación. Los valores son recuperados de la memoria a partir del producto columna a columna de la tabla auxiliar con la \acrshort{amr} cuyas columnas son también correspondientemente una distribución de probabilidad.
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=3.0in]{Figures//Work//Placeholder.svg}
+  \caption{Ejemplo de una operación de recuperación}
+  \label{fig:recuperación}
+\end{figure}
+
+\section{Propiedades de la Memoria Asociativa Entrópica}
+
+\begin{enumerate}
+
+    \item Asociativa
+    \item Distribuida
+    \item Declarativa
+    \item Abstractiva
+    \item Productiva
+    \item Determinada
+    \item Entrópica
+    \item Constructiva
+    \item Capacidad
+
+\end{enumerate}
+
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Comparación entre EAM/W-EAM y las redes neuronales artificiales (ANN) y modelos relacionados}
+\label{tab:comparacion-eam-ann}
+
+\begin{tabularx}{\textwidth}{XXX}
+\toprule
+\textbf{Propiedad} & \textbf{EAM y W-EAM} & \textbf{ANN y modelos relacionados} \\
+\midrule
+
+\textbf{Formato representacional} 
+& Declarativo pero distribuido, de modo que la relación entre las celdas en las AMR y los contenidos de la memoria es de muchos a muchos 
+& Sub-simbólico, embebido en matrices numéricas \\
+
+\textbf{Operaciones de memoria} 
+& Manipulaciones declarativas sobre las celdas y columnas de las AMR 
+& Operaciones de suma y multiplicación de matrices \\
+
+\textbf{Productividad de la representación} 
+& Emergencia de objetos del conjunto $F_p$ 
+& La memoria está orientada a almacenar y comparar patrones; no existe productividad \\
+
+\textbf{Registro de memoria} 
+& Produce la abstracción de la clave de entrada junto con el contenido de la memoria 
+& Actualiza una matriz numérica de pesos \\
+
+\textbf{Reconocimiento de memoria} 
+& Verifica la inclusión de la clave en la memoria mediante la implicación material lógica 
+& Realiza una búsqueda numérica hasta que la clave y el producto de una operación matricial convergen \\
+
+\textbf{Recuperación de memoria} 
+& Operación constructiva que produce objetos nuevos a partir de una clave completa o parcial y del contenido de la memoria 
+& Operación reproductiva o fotográfica que reproduce un objeto previamente almacenado a partir de una clave completa o parcial \\
+
+\textbf{Demarcación entre auto y heteroasociatividad} 
+& Débil 
+& Fuerte \\
+
+\textbf{Rechazo de claves no contenidas en la memoria} 
+& Directo, sin búsqueda 
+& Rechazo por fallo en la búsqueda, implementando una forma del supuesto de mundo cerrado \\
+
+\textbf{Paralelismo} 
+& Manipulaciones paralelas directas de celdas y columnas 
+& Cálculo paralelo de operaciones matriciales \\
+
+\textbf{Parámetro funcional principal} 
+& Entropía – no se utiliza una función de energía 
+& Función de energía – la entropía no tiene un papel funcional \\
+
+\textbf{Capacidad y uso de la memoria} 
+& Función de la entropía 
+& Depende del número de mínimos locales de la función de energía \\
+
+\textbf{Demanda de recursos de memoria y procesamiento} 
+& Baja 
+& Alta \\
+
+\bottomrule
+\end{tabularx}
+
+\end{table}
+
+
+
+\section{Evolución de la Memoria Asociativa Entrópica}
+
+
+El primer modelo de Memoria Asociativa Entrópica fue propuesta por el Dr. \cite{pineda_entropic_2021} a partir de sus ideas sobre un nuevo tipo de computación a la que llamó Computación Relacional Indeterminada (\acrshort{ric}). En este modo de computación, el objeto básico es la relación matemática, es decir un objeto en el dominio que tiene varios objetos asociados en el codominio \cite{pineda_entropy_2020}. 
+
+\subsection{\acrshort{ric}}
+
+\paragraph{Definición Formal}
+
+Sea la relación $r : A \to V$, donde $A$ y $V$ son dos conjuntos $A = \{a_1, \ldots, a_n\} \text{ and } V = \{v_1, \ldots, v_m\}, \text{ con cardinalidades } n \text{ and } m.$ que representan el dominio y codominio respectivamente. \cite{pineda_entropy_2020} llama a los objetos del dominio argumentos, a los del codominio valores y define cualquier relación $r$ como una función $R : A \times V \to \{0,1\}$ que indica si un par $(a,v)$ pertenece ($R(a_i,v_j)=1$) o no pertenece ($R(a_i,v_j)=0$) a una relación entre los conjuntos $A$ y $V$. Por ejemplo, si $A = \{1,2,3\}$ y $V = \{a,b\}$, podemos definir $R(1,a) = 1$, $R(2,a) = 0$, $R(3,b) = 1$, lo que equivale a decir que la relación $R$ contiene los pares $R = \{(1,a),(3,b)\}$. 
+
+Del mismo modo que $f(a_i) = v_j$ se interpreta como que el valor de la función $f$ para el argumento $a_i$ es $v_j$, $r(a_i) = v_j$ indica que el valor de la relación $r$ para el argumento $a_i$ es un objeto $v_j$ seleccionado aleatoriamente (dada una distribución adecuada) entre los valores para los que $R(a_i, v_j)$ es verdadero \cite{pineda_entropy_2020}. En otras palabras, evaluar una relación $r$ se interpreta como seleccionar aleatoriamente uno de los valores asociados al argumento dado. 
+
+\paragraph{Operaciones \acrshort{ric}}
+
+El Dr. \cite{pineda_entropy_2020} define entonces tres operaciones básicas: abstracción, contención y reducción. Sea $r_f$ y $r_a$ dos relaciones arbitrarias de $A \to V $, y $f_a$ una función con el mismo dominio y codominio.
+\begin{itemize}
+    \item Abstracción: es una operación de construcción que produce la unión de dos relaciones y cualquier relación puede ser el argumento de esta operación. A la vez, cada relación se forma incrementalmente a partir de la operación de abstracción.
+    $\lambda(r_f, r_a) = q$, $\text{tal que } Q(a_i, v_j) = R_f(a_i, v_j) \vee R_a(a_i, v_j), \quad \forall a_i \in A, \forall v_j \in V $ o sea $\lambda(r_f, r_a) = r_f \cup r_a$.
+    \item Contención: La operación verifica si todos los valores asociados a un argumento $a_i$ en $r_a$ están asociados al mismo argumento en $r_f$ para todos los argumentos, de modo que $r_a \subseteq r_f$. La relación de contención es falsa solo en el caso de que $R_a(a_i, v_j) = 1$ y $R_f(a_i, v_j) = 0$, o si $R_a(a_i, v_j) > R_f(a_i, v_j)$, para al menos un $(a_i, v_j)$.
+        $$
+        \eta(r_a, r_f) = 
+            \begin{cases} 
+                \text{verdadero} & \text{si } R_a(a_i, v_j) \rightarrow R_f(a_i, v_j), \ \forall a_i \in A, v_j \in V \\ 
+                \text{falso} & \text{en otro caso}
+            \end{cases}
+        $$
+    O sea, la implicación material.
+    \item Reducción $\beta(f_a, r_f) = f_v 
+        \text{tal que si } \eta(f_a, r_f) \text{ es verdadero, entonces } f_v(a_i) = r_f(a_i), \ \forall a_i $ donde la distribución aleatoria está centrada alrededor de $f_a$.
+\end{itemize}
+
+Llamamos funciones constituyentes (\textit{constituent functions}) al conjunto de funciones que están contenidas en una relación. Son las posibles combinaciones al tomar un valor entre aquellos asignados a un argumento por la relación a cada argumento. Entonces, la construcción consiste entonces en formar una función tomando un valor correspondiente a una celda marcada de cada columna, para todos los valores y para todas las columnas. Este conjunto resultante puede ser más grande que los usados inicialmente. 
+
+La idea central de la indeterminación en este modo de computación tiene que ver precisamente con la operación de reducción, donde si la función argumento $f_a$ está contenida en la relación $r_f$, la operación genera una nueva función tal que su valor para cada uno de sus argumentos se selecciona de entre los valores de la relación $r_f$ para el mismo argumento. En esta selección, $f_a$ es la pista para otra función recuperada de $r_f$, de modo que $v_j$ se selecciona de ${v_j \mid (a_i, v_j) \in R_f}$ utilizando una función de distribución aleatoria adecuada centrada en $f_a(a_i)$. 
+
+Las relaciones tienen entonces una entropía asociada, que se define aquí como la indeterminación promedio de la relación $r$.
+
+\subsection{\gls{mae}}
+
+Las ideas propuestas sobre la \acrshort{ric} y el \textit{Table Computing}, convergieron en la primera versión de la \gls{mae}, donde se utilizaron tablas con valores booleanos y operaciones inspiradas en las que anteriormente revisamos. Podemos observar que las operaciones de \gls{lambda}-register y \gls{eta}-recognition estaban definidas de igual manera, direcamente con las operaciones lógicas de disyunción e implicación material entre la tabla auxiliar y la \acrshort{amr}.
+
+
+
+\subsection{\gls{weam}}
+
+En \textit{Weighted entropic associative memory and phonetic learning}, \cite{pineda_weighted_2022} extiende la idea de la tabla \acrshort{amr} booleana a una pesada (entera). Ahora las operaciones deben modificarse para funcionar de acuerdo a esta nueva \acrshort{amr}.
+
+La operación $ \text{Memory Register: } (r_f, r_a) = q $ tal que $Q(a_i, v_j) = R_f(a_i, v_j) \oplus R_a(a_i, v_j)\ $ para todo  $ a_i \in A,\ v_j \in V\ $ es decir $(r_f, r_a) = r_f \oplus r_a.$
+
+
+\section{Entropía}
+
+Gracias a la naturaleza distribuida de este sistema de memoria, la operación \gls{beta}-recall permite el surgimiento de nuevas funciones (trazas de memoria) a partir de las combinaciones de las celdas entrantes de cada columna. En el modelo original, aquellas con valores booleanos verdaderos y en la \gls{weam} aquellas con valores $\geq 1$. 
+
+Los objetos recuperados a partir de las combinaciones de las celdas de cada columna, son objetos que no necesariamente estaban registrados en la memoria, pero que sí están relacionados (propiedad asociativa) con la \textit{\gls{cue}} utilizada para la recuperación. Esta operación permite que emerjan nuevo objetos con el potencial de representar objetos relacionados a la pista original. 
+
+¿Pero cómo podríamos entonces recuperar y reconocer las funciones originalmente almacenados en la memoria de estos nuevos objetos? No podemos, porque la representación emergente es indeterminada. Entonces, ¿Cómo medimos esta indeterminación? 
+
+Consideremos que cada relación tiene una entropía asociada.
+
+$$e(r) = -\dfrac{1}{n} \sum_{i=1}^{n} \log_2 (\nu_i)$$
+
+
+% Definir y explicar la Entropía.
+
+% Decir porqué es relevante y porqué la memoria es entrópica.

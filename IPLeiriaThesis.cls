@@ -37,7 +37,7 @@
     coverstyle .initial:n = { classic },
 
     language .choices:nn = 
-        { english, portuguese } 
+        { english, spanish } 
         { \tl_gset:Nn \g_IPLeiriaThesis_mylanguage_tl { #1 } },
     language / unknown .code:n = 
         { \ClassWarningNoLine{IPLeiriaThesis}{Specified~'language'~not~available.~Defaulting~to~'english'} },
@@ -163,6 +163,7 @@
 \RequirePackage{tikz} % Create high-quality graphics programmatically.
 \RequirePackage{psvectorian} % To include in-text ornamatentions. 
 \RequirePackage{blindtext} % Generate placeholder text.
+\RequirePackage{svg} % Load SVG images
 
 \tcbuselibrary{most} % Load most libraries from the tcolorbox package.
 \WarningsOff[blindtext] % Suppress warnings from the blindtext package.

@@ -1,10 +1,48 @@
 \chapter[Procesamiento del Lenguaje Natural]{Procesamiento del Lenguaje Natural}
 \label{cp:nlp}
 
-\section{¿Qué es el PLN?}
 
-\section{Mecanismos de Atención}
+% Aquí hay que explica porque usamos Transformers. ¿Por que son relevantes en PLN? 
+
+\section{¿Qué es el Procesamiento del Lenaguje Natural?}
+
+El \acrshort{pln} es una subrama de la Inteligencia Artificial que busca que las computadoras puedan reconozcan, comprendan y generen texto y voz similar al lenguaje humano a través de distintos enfoques. Para lograr algo tan complejo como lo es trabajar con el lenguaje, comúmnente se ha dividido el problema en tareas como el Reconocimiento de entidades nombradas (NER), el Etiquetado de partes de la oración (POS) y la Desambiguación del sentido de las palabras. Tareas que se han tratado de llevar a cabo utilizando distintas técnicas como la lingüística computacional (el modelado basado en reglas del lenguaje humano), el modelado estadístico, el machine learning y el aprendizaje profundo.
+
+\section{Linguistica Computaciónal y Semántica}
+
+
+\section{Embeddings y ML}
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=3.0in]{Figures//Work//Placeholder.svg}
+  \caption{Embeddings}
+  \label{fig:embeddings}
+\end{figure}
+
+
+\section{Del dominio de las imágenes a las secuencias.}
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=7.0in]{Figures//Work//ModelTimeline.svg}
+  \caption{Línea de Tiempo de Modelos Generativos}
+  \label{fig:LíneaDelTiempo}
+\end{figure}
+
+En los primeros modelos generativos presentados, el trabajo se concertaba principalmente en modelos capaces de trabajar en el dominio de las imágenes, arreglos bi-dimensionales en el que cada píxel representa un valor entero. Ahora nos preguntamos ¿Cómo representamos otro tipo de dominios como la música, el texto o incluso el cine? ¿Cómo son distintas a una imagen? Cuando escribimos un texto, comenzamos con una palabra y enseguida vamos añadiendo una tras otra hasta terminar. No obstante, cada que elegimos una palabra no es al azar, sino que depende de las anteriores incluso con relaciones de distintos niveles y naturaleza entre cada una de las palabras. Esto lo podemos modelar como una secuencia, que es un conjunto discretos y ordenados de elementos en donde el orden posicional o temporal es más importante que el espacial. Un caso conocido es el de las series de tiempo, en donde los datos aparecen secuencialmente sobre el tiempo y que su predicción exigen modelos capaces de capturar estas dependencias secuenciales y temporales en las que cada elemento depende de los anteriores. 
+
+\section{Arquitecturas Recurrentes y Modelos Autoregresivos}
+
+Los primeros modelos de redes neuronales para esta tarea fueron los modelos con Arquitecturas Recurrentes (RNN) como las LSTMs.
+
+
 
 \section{Transformers}
 
-\subsection{Embeddings de Palabras}
+Uno de los cambios mas grandes en la disciplina del \acrshort{pln} ha sido probablemente el de los \textit{Transformers}. Esta arquitectura de redes neuronales se popularizó en el artículo \cite{vaswani_attention_2023} publicado originalmente en 2017 por investigadores de \textit{Google Research} y rápidamente cambió la manera en la que se hacía \acrshort{pln}. Los \textit{Transformers} revolucionarion tareas como la clasificación de textos, el resumen automático, la traducción, la respuesta a preguntas, los chatbots y la comprensión del lenguaje natural (NLU) \cite{tunstall_natural_2022}.
+
+\section{¡¡¡Atención!!!}
+
+\cite{vaswani_attention_2023}
+
